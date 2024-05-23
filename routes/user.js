@@ -14,14 +14,24 @@ router.get("/signup", (req, res) => {
 router.post("/signup", async (req, res) => {
   const { fullName, email, password } = req.body;
   await User.create({ fullName, email, password });
-  return res.redirect('/')
+  return res.redirect("/");
 });
 
-router.post('/signin', async (req, res) => {
-    const {email,password}=req.body;
-    const user=await User.matchPassword(email,password);
-    console.log("user",user);
-    return res.redirect('/');
+router.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const token = await User.matchPasswordAndGenerateToken(email, password);
+    res.cookie("token", token).redirect("/");
+  } catch (error) {
+    return res.render("signin", {
+      error: "Incorrect email or password",
+    });
+  }
+});
+
+router.get('/logout',(req,res)=>{
+  res.clearCookie('token').redirect('/');
 })
 
 module.exports = router;

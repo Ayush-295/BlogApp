@@ -13,8 +13,19 @@
   </head>
   <body>
     <%- include('./partials/nav.ejs') %>
-
-    
+    <div class="container ">
+    <% if (locals.blogs) { %>
+      <% locals.blogs.forEach(blog => { %>
+        <div class="card mt-4 " style="width: 18rem;">
+          <img src="<%= blog.coverImageUrl%>"  class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title"><%= blog.title %></h5>
+            <a href="/blog/<%= blog._id%>" class="btn btn-primary">Open</a>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
